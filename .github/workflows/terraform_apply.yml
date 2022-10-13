@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  # Trigger the workflow on push on the main branch
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'CODEOWNERS'
+      - '**.md'
+      # - '.**'
+
+jobs:
+  setup_runner:
+    name: Setup Runner
+    runs-on: ubuntu-22.04
+
+    steps:
+      # - name: Checkout
+      #   id: checkout
+      #   uses: actions/checkout@v2
+      #   with:
+      #     persist-credentials: false
+      #     fetch-depth: 0
+      
+      - name: Login
+        id: login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: 'Run Azure CLI commands'
+        run: |
+          az account show
+          az group list
+          pwd
+
+      - name: Create GitHub Runner
+        id: create_github_runner
+        run: |
+          GITHUB_TOKEN=$(curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/runners/registration-token | jq ".token" -r)
+
+          az containerapp create -n io-infra-pasq -g pasquale-test \
+            --image ghcr.io/pagopa/github-self-hosted-runner:v1.0.3 \
+            --environment capp-env-pasq \
+            --env-vars \
+            GITHUB_REPOSITORY="https://github.com/${{ github.repository }}" \
+            GITHUB_TOKEN="${GITHUB_TOKEN}"
