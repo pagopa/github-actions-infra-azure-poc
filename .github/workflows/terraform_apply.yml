@@ -10,6 +10,10 @@ on:
       - '**.md'
       # - '.**'
 
+permissions:
+      id-token: read
+      contents: read
+
 jobs:
   setup_runner:
     name: Setup Runner
