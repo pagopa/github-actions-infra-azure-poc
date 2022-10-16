@@ -81,26 +81,29 @@ jobs:
           AZURE_CONTAINER_APP_NAME=${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }}
           echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
 
-          # GITHUB_TOKEN=$(curl \
-          #   -X POST \
-          #   -H "Accept: application/vnd.github+json" \
-          #   -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
-          #   https://api.github.com/repos/${{ github.repository }}/actions/runners/registration-token | jq ".token" -r)
+          # sometimes delete operation needs more time to works,
+          # so we retry the operation for 60 seconds
 
-          # echo "[INFO] GITHUB_TOKEN: ******"
+          starttime = `date +%s`
+          while [ $(( $(date +%s) - 60 )) -lt $starttime ]; do
 
-          GITHUB_RUNNER_ID=$(curl \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/runners | jq '.runners | map(select(.name | startswith("'${AZURE_CONTAINER_APP_NAME}'"))) | .[].id' -r)
+            GITHUB_RUNNER_ID=$(curl \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
+              https://api.github.com/repos/${{ github.repository }}/actions/runners | jq '.runners | map(select(.name | startswith("'${AZURE_CONTAINER_APP_NAME}'"))) | .[].id' -r)
 
-          echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID}"
+            [ -z "$GITHUB_RUNNER_ID" ] && break
+            echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID}"
 
-          curl \
-            -X DELETE \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/runners/${GITHUB_RUNNER_ID}
+            curl \
+              -X DELETE \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
+              https://api.github.com/repos/${{ github.repository }}/actions/runners/${GITHUB_RUNNER_ID}
+
+            sleep 1
+
+          done
 
           echo "[INFO] GITHUB_RUNNER_ID deleted"
 
