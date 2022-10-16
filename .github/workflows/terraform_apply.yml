@@ -83,7 +83,7 @@ jobs:
   clear_runner:
     name: Clean Runner
     runs-on: ubuntu-22.04
-    needs: runner_job
+    needs: [ setup_runner, runner_job]
     
     steps:
 
