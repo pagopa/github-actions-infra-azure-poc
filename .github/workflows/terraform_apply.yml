@@ -81,6 +81,13 @@ jobs:
           AZURE_CONTAINER_APP_NAME=${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }}
           echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
 
+          az containerapp delete \
+            --name "${AZURE_CONTAINER_APP_NAME}" \
+            --resource-group "${AZURE_RESORCE_GROUP_NAME}" \
+            --yes
+
+          echo "[INFO] AZURE_CONTAINER_APP_NAME deleted"
+
           # sometimes delete operation needs more time to works,
           # so we retry the operation for 60 seconds
 
@@ -112,11 +119,3 @@ jobs:
           done
 
           echo "[INFO] GITHUB_RUNNER_ID deleted"
-
-          az containerapp delete \
-            --name "${AZURE_CONTAINER_APP_NAME}" \
-            --resource-group "${AZURE_RESORCE_GROUP_NAME}" \
-            --no-wait \
-            --yes
-
-          echo "[INFO] AZURE_CONTAINER_APP_NAME deleted"
