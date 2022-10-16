@@ -56,7 +56,7 @@ jobs:
           az containerapp create -n io-infra-pasq-${{ github.run_id }} -g pasquale-test \
             --image ghcr.io/pagopa/github-self-hosted-runner:v1.0.3 \
             --environment capp-env-pasq \
-            --secrets github_token="${GITHUB_TOKEN}"
+            --secrets github-token="${GITHUB_TOKEN}"
             --env-vars \
             GITHUB_REPOSITORY="https://github.com/${{ github.repository }}" \
-            SECRETENV=github_token
+            SECRETENV=github-token
