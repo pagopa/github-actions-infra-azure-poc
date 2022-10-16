@@ -92,8 +92,14 @@ jobs:
               -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
               https://api.github.com/repos/${{ github.repository }}/actions/runners | jq '.runners | map(select(.name | startswith("'${AZURE_CONTAINER_APP_NAME}'"))) | .[].id' -r)
 
-            [ -z "$GITHUB_RUNNER_ID" ] && break
-            echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID}"
+            # [ -z "$GITHUB_RUNNER_ID" ] && echo "no runners found" && break
+            if [ -z "$GITHUB_RUNNER_ID" ]
+            then
+              echo "[INFO] GITHUB_RUNNER_ID is empty"
+              break
+            fi
+
+            echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID} is NOT empty"
 
             curl \
               -X DELETE \
