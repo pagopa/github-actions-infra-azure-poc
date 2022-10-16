@@ -84,8 +84,8 @@ jobs:
           # sometimes delete operation needs more time to works,
           # so we retry the operation for 60 seconds
 
-          starttime = `date +%s`
-          while [ $(( $(date +%s) - 60 )) -lt $starttime ]; do
+          START_TIME=$(date +%s)
+          while [ $(( $(date +%s) - 60 )) -lt $START_TIME ]; do
 
             GITHUB_RUNNER_ID=$(curl \
               -H "Accept: application/vnd.github+json" \
