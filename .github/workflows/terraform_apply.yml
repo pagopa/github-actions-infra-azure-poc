@@ -95,7 +95,7 @@ jobs:
           GITHUB_RUNNER_ID=$(curl \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/runners | .runners | map(select(.name | startswith("linux_runner"))) | .[].id)
+            https://api.github.com/repos/${{ github.repository }}/actions/runners | jq ".runners | map(select(.name | startswith("linux_runner"))) | .[].id" -r)
 
           echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID}"
 
