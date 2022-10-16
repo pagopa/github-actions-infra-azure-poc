@@ -78,10 +78,11 @@ jobs:
         id: delete_github_runner
         run: |
           AZURE_RESORCE_GROUP_NAME="pasquale-test"
-          echo "[INFO] AZURE_CONTAINER_APP_NAME: ${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }}"
+          AZURE_CONTAINER_APP_NAME=${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }}
+          echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
 
           az containerapp delete \
-            --name ${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }} \
+            --name "${AZURE_CONTAINER_APP_NAME}" \
             --resource-group "${AZURE_RESORCE_GROUP_NAME}" \
             --no-wait \
             --yes
@@ -95,7 +96,7 @@ jobs:
           GITHUB_RUNNER_ID=$(curl \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/runners | jq ".runners | map(select(.name | startswith("linux_runner"))) | .[].id" -r)
+            https://api.github.com/repos/${{ github.repository }}/actions/runners | jq ".runners | map(select(.name | startswith("${AZURE_RESORCE_GROUP_NAME}"))) | .[].id" -r)
 
           echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID}"
 
