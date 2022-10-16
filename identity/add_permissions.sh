@@ -32,7 +32,7 @@ az role assignment delete \
   --assignee "${SP_OBJECT_ID}"
 
 az role assignment create \
-  --role reader \
+  --role contributor \
   --subscription "${SUBSCRIPTION_ID}" \
   --assignee-object-id "${SP_OBJECT_ID}" \
   --assignee-principal-type ServicePrincipal \
