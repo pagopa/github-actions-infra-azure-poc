@@ -54,7 +54,7 @@ jobs:
           AZURE_CONTAINER_APP_ENVIRONMENT_NAME="capp-env-pasq"
           AZURE_CONTAINER_APP_NAME="runner-${{ github.run_id }}${TIMESTAMP}"
           echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
-          run: echo "::set-output name=AZURE_CONTAINER_APP_NAME::${AZURE_CONTAINER_APP_NAME}"
+          echo "::set-output name=AZURE_CONTAINER_APP_NAME::${AZURE_CONTAINER_APP_NAME}"
 
           GITHUB_TOKEN=$(curl \
             -X POST \
