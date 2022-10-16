@@ -94,6 +94,8 @@ jobs:
           AZURE_CONTAINER_APP_NAME=${{ needs.setup_runner.outputs.AZURE_CONTAINER_APP_NAME }}
           echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
 
+          az config set extension.use_dynamic_install=yes_without_prompt
+
           az containerapp delete \
             --name "${AZURE_CONTAINER_APP_NAME}" \
             --resource-group "${AZURE_RESORCE_GROUP_NAME}" \
