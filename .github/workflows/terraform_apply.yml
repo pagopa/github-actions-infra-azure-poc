@@ -45,7 +45,8 @@ jobs:
       - name: Create GitHub Runner
         id: create_github_runner
         run: |
-          GITHUB_REPO=${${{ github.repository }}////-}
+          GITHUB_REPO=${{ github.repository }}
+          GITHUB_REPO=${GITHUB_REPO////-}
           echo $GITHUB_REPO
           GITHUB_TOKEN=$(curl \
             -X POST \
