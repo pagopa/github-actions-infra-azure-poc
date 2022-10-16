@@ -18,7 +18,9 @@ jobs:
   setup_runner:
     name: Setup Runner
     runs-on: ubuntu-22.04
-
+    outputs:
+      AZURE_CONTAINER_APP_NAME: ${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }}
+    
     steps:
       # - name: Checkout
       #   id: checkout
@@ -52,6 +54,7 @@ jobs:
           AZURE_CONTAINER_APP_ENVIRONMENT_NAME="capp-env-pasq"
           AZURE_CONTAINER_APP_NAME="runner-${{ github.run_id }}${TIMESTAMP}"
           echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
+          run: echo "::set-output name=AZURE_CONTAINER_APP_NAME::${AZURE_CONTAINER_APP_NAME}"
 
           GITHUB_TOKEN=$(curl \
             -X POST \
@@ -71,21 +74,30 @@ jobs:
             GITHUB_REPOSITORY="https://github.com/${{ github.repository }}" \
             GITHUB_TOKEN=secretref:github-token
 
-      # - name: Create GitHub Runner
-      #   id: create_github_runner
-      #   run: |
-      #     GITHUB_TOKEN=$(curl \
-      #       -X POST \
-      #       -H "Accept: application/vnd.github+json" \
-      #       -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
-      #       https://api.github.com/repos/${{ github.repository }}/actions/runners/registration-token | jq ".token" -r)
-            
-      #     az config set extension.use_dynamic_install=yes_without_prompt
+      - name: Delete GitHub Runner
+        id: delete_github_runner
+        run: |
+          echo "[INFO] AZURE_CONTAINER_APP_NAME: ${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }}"
+          # AZURE_RESORCE_GROUP_NAME="pasquale-test"
+          # AZURE_CONTAINER_APP_ENVIRONMENT_NAME="capp-env-pasq"
+          # AZURE_CONTAINER_APP_NAME="runner-${{ github.run_id }}${TIMESTAMP}"
+          # echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
+          # run: echo "::set-output name=AZURE_CONTAINER_APP_NAME::${AZURE_CONTAINER_APP_NAME}"
 
-      #     az containerapp create -n io-infra-pasq-${{ github.run_id }} -g pasquale-test \
-      #       --image ghcr.io/pagopa/github-self-hosted-runner:v1.0.3 \
-      #       --environment capp-env-pasq \
-      #       --secrets github-token="${GITHUB_TOKEN}" \
-      #       --env-vars \
-      #       GITHUB_REPOSITORY="https://github.com/${{ github.repository }}" \
-      #       SECRETENV=github-token
+          # GITHUB_TOKEN=$(curl \
+          #   -X POST \
+          #   -H "Accept: application/vnd.github+json" \
+          #   -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
+          #   https://api.github.com/repos/${{ github.repository }}/actions/runners/registration-token | jq ".token" -r)
+            
+          # az config set extension.use_dynamic_install=yes_without_prompt
+
+          # az containerapp create \
+          #   -n "${AZURE_CONTAINER_APP_NAME}" \
+          #   -g "${AZURE_RESORCE_GROUP_NAME}" \
+          #   --image "${SELF_HOSTED_RUNNER_IMAGE}" \
+          #   --environment "${AZURE_CONTAINER_APP_ENVIRONMENT_NAME}" \
+          #   --secrets github-token="${GITHUB_TOKEN}" \
+          #   --env-vars \
+          #   GITHUB_REPOSITORY="https://github.com/${{ github.repository }}" \
+          #   GITHUB_TOKEN=secretref:github-token
