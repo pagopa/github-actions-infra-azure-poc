@@ -1,4 +1,4 @@
-name: Release
+name: Self Hosted Runner
 
 on:
   # Trigger the workflow on push on the main branch
@@ -22,12 +22,6 @@ jobs:
       AZURE_CONTAINER_APP_NAME: ${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }}
     
     steps:
-      # - name: Checkout
-      #   id: checkout
-      #   uses: actions/checkout@v2
-      #   with:
-      #     persist-credentials: false
-      #     fetch-depth: 0
       
       - name: Login
         id: login
@@ -37,12 +31,6 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      # - name: 'Run Azure CLI commands'
-      #   run: |
-      #     az account show
-      #     az group list
-      #     pwd
 
       - name: Create GitHub Runner
         id: create_github_runner
@@ -74,11 +62,36 @@ jobs:
             GITHUB_REPOSITORY="https://github.com/${{ github.repository }}" \
             GITHUB_TOKEN=secretref:github-token
 
+  runner_job:
+    name: Runner Job
+    runs-on: [self-hosted, linux]
+    needs: setup_runner
+    
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: 'Run CLI commands on self hosted runner'
+        run: |
+          echo "hello"
+          pwd
+
+  clear_runner:
+    name: Clean Runner
+    runs-on: ubuntu-22.04
+    needs: runner_job
+    
+    steps:
+
       - name: Delete GitHub Runner
         id: delete_github_runner
         run: |
           AZURE_RESORCE_GROUP_NAME="pasquale-test"
-          AZURE_CONTAINER_APP_NAME=${{ steps.create_github_runner.outputs.AZURE_CONTAINER_APP_NAME }}
+          AZURE_CONTAINER_APP_NAME=${{ needs.setup_runner.outputs.AZURE_CONTAINER_APP_NAME }}
           echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
 
           az containerapp delete \
