@@ -50,7 +50,7 @@ jobs:
 
           AZURE_RESORCE_GROUP_NAME="pasquale-test"
           AZURE_CONTAINER_APP_ENVIRONMENT_NAME="capp-env-pasq"
-          AZURE_CONTAINER_APP_NAME="${{ github.run_id }}${TIMESTAMP}"
+          AZURE_CONTAINER_APP_NAME="runner-${{ github.run_id }}${TIMESTAMP}"
           echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
 
           GITHUB_TOKEN=$(curl \
