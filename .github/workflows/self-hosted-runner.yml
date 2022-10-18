@@ -18,8 +18,8 @@ jobs:
   setup_runner:
     name: Setup Runner
     runs-on: ubuntu-22.04
-    # outputs:
-    #   runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
+    outputs:
+      runner_name: steps.create_github_runner.outputs.runner_name
     steps:
       - name: Create GitHub Runner 
         id: create_github_runner
