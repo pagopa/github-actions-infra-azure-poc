@@ -19,10 +19,10 @@ jobs:
     name: Setup Runner
     runs-on: ubuntu-22.04
     outputs:
-      runner_name: steps.create_github_runner.outputs.runner_name
+      runner_name: ${{ steps.my_create_github_runner.outputs.runner_name }}
     steps:
       - name: Create GitHub Runner 
-        id: create_github_runner
+        id: my_create_github_runner
         uses: pagopa/github-self-hosted-runner-azure-create-action@main
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
