@@ -126,6 +126,8 @@ jobs:
 
           echo "[INFO] AZURE_CONTAINER_APP_NAME deleted"
 
+          sleep 10
+
           # sometimes delete operation needs more time to works,
           # so we retry the operation for 60 seconds
 
