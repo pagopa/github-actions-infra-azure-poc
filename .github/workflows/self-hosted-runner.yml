@@ -54,63 +54,73 @@ jobs:
     name: Clean Runner
     runs-on: ubuntu-22.04
     needs: [ setup_runner, runner_job]
-    
     steps:
-
-      - name: Login
-        id: login
-        uses: azure/login@v1
+      - name: Clear GitHub Runner 
+        id: clear_github_runner
+        uses: pagopa/github-self-hosted-runner-azure-clear-action@main
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource_group_name: "pasquale-test"
+          runner_name: ${{ needs.setup_runner.outputs.runner_name }}
 
-      - name: Delete GitHub Runner
-        id: delete_github_runner
-        run: |
-          AZURE_RESORCE_GROUP_NAME="pasquale-test"
-          AZURE_CONTAINER_APP_NAME=${{ needs.setup_runner.outputs.runner_name }}
-          echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
+    # steps:
 
-          az config set extension.use_dynamic_install=yes_without_prompt
+    #   - name: Login
+    #     id: login
+    #     uses: azure/login@v1
+    #     with:
+    #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+    #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-          az containerapp delete \
-            --name "${AZURE_CONTAINER_APP_NAME}" \
-            --resource-group "${AZURE_RESORCE_GROUP_NAME}" \
-            --yes
+    #   - name: Delete GitHub Runner
+    #     id: delete_github_runner
+    #     run: |
+    #       AZURE_RESORCE_GROUP_NAME="pasquale-test"
+    #       AZURE_CONTAINER_APP_NAME=${{ needs.setup_runner.outputs.runner_name }}
+    #       echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
 
-          echo "[INFO] AZURE_CONTAINER_APP_NAME deleted"
+    #       az config set extension.use_dynamic_install=yes_without_prompt
 
-          sleep 30
+    #       az containerapp delete \
+    #         --name "${AZURE_CONTAINER_APP_NAME}" \
+    #         --resource-group "${AZURE_RESORCE_GROUP_NAME}" \
+    #         --yes
 
-          # sometimes delete operation needs more time to works,
-          # so we retry the operation for 60 seconds
+    #       echo "[INFO] AZURE_CONTAINER_APP_NAME deleted"
 
-          START_TIME=$(date +%s)
-          while [ $(( $(date +%s) - 60 )) -lt $START_TIME ]; do
+    #       sleep 30
 
-            GITHUB_RUNNER_ID=$(curl \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/actions/runners | jq '.runners | map(select(.name | startswith("'${AZURE_CONTAINER_APP_NAME}'"))) | .[].id' -r)
+    #       # sometimes delete operation needs more time to works,
+    #       # so we retry the operation for 60 seconds
 
-            # [ -z "$GITHUB_RUNNER_ID" ] && echo "no runners found" && break
-            if [ -z "$GITHUB_RUNNER_ID" ]
-            then
-              echo "[INFO] GITHUB_RUNNER_ID is empty"
-              break
-            fi
+    #       START_TIME=$(date +%s)
+    #       while [ $(( $(date +%s) - 60 )) -lt $START_TIME ]; do
 
-            echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID} is NOT empty"
+    #         GITHUB_RUNNER_ID=$(curl \
+    #           -H "Accept: application/vnd.github+json" \
+    #           -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
+    #           https://api.github.com/repos/${{ github.repository }}/actions/runners | jq '.runners | map(select(.name | startswith("'${AZURE_CONTAINER_APP_NAME}'"))) | .[].id' -r)
 
-            curl \
-              -X DELETE \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/actions/runners/${GITHUB_RUNNER_ID}
+    #         # [ -z "$GITHUB_RUNNER_ID" ] && echo "no runners found" && break
+    #         if [ -z "$GITHUB_RUNNER_ID" ]
+    #         then
+    #           echo "[INFO] GITHUB_RUNNER_ID is empty"
+    #           break
+    #         fi
 
-            sleep 66
+    #         echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID} is NOT empty"
 
-          done
+    #         curl \
+    #           -X DELETE \
+    #           -H "Accept: application/vnd.github+json" \
+    #           -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
+    #           https://api.github.com/repos/${{ github.repository }}/actions/runners/${GITHUB_RUNNER_ID}
 
-          echo "[INFO] GITHUB_RUNNER_ID deleted"
+    #         sleep 66
+
+    #       done
+
+    #       echo "[INFO] GITHUB_RUNNER_ID deleted"
