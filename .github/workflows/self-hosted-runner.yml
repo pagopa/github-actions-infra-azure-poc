@@ -64,6 +64,7 @@ jobs:
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resource_group_name: "pasquale-test"
           runner_name: ${{ needs.setup_runner.outputs.runner_name }}
+          pat_token: ${{ secrets.BOT_TOKEN }}
 
     # steps:
 
