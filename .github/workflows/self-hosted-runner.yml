@@ -11,12 +11,12 @@ on:
       # - '.**'
 
 permissions:
-      id-token: write
-      contents: read
+  id-token: write
+  contents: read
 
 jobs:
-  setup_runner:
-    name: Setup Runner
+  create_runner:
+    name: Create Runner
     runs-on: ubuntu-22.04
     outputs:
       runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
@@ -34,8 +34,8 @@ jobs:
 
   runner_job:
     name: Runner Job
-    runs-on: [self-hosted, "${{ needs.setup_runner.outputs.runner_name }}" ]
-    needs: setup_runner
+    runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}" ]
+    needs: create_runner
     
     steps:
       - name: Checkout
@@ -50,78 +50,18 @@ jobs:
           echo "hello"
           pwd
 
-  clear_runner:
-    name: Clean Runner
+  cleanup_runner:
+    name: Cleanup Runner
     runs-on: ubuntu-22.04
-    needs: [ setup_runner, runner_job]
+    needs: [ create_runner, runner_job]
     steps:
-      - name: Clear GitHub Runner 
-        id: clear_github_runner
-        uses: pagopa/github-self-hosted-runner-azure-clear-action@main
+      - name: Cleanup GitHub Runner 
+        id: cleanup_github_runner
+        uses: pagopa/github-self-hosted-runner-azure-cleanup-action@main
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resource_group_name: "pasquale-test"
-          runner_name: ${{ needs.setup_runner.outputs.runner_name }}
+          runner_name: ${{ needs.create_runner.outputs.runner_name }}
           pat_token: ${{ secrets.BOT_TOKEN }}
-
-    # steps:
-
-    #   - name: Login
-    #     id: login
-    #     uses: azure/login@v1
-    #     with:
-    #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
-    #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-    #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-    #   - name: Delete GitHub Runner
-    #     id: delete_github_runner
-    #     run: |
-    #       AZURE_RESORCE_GROUP_NAME="pasquale-test"
-    #       AZURE_CONTAINER_APP_NAME=${{ needs.setup_runner.outputs.runner_name }}
-    #       echo "[INFO] AZURE_CONTAINER_APP_NAME: ${AZURE_CONTAINER_APP_NAME}"
-
-    #       az config set extension.use_dynamic_install=yes_without_prompt
-
-    #       az containerapp delete \
-    #         --name "${AZURE_CONTAINER_APP_NAME}" \
-    #         --resource-group "${AZURE_RESORCE_GROUP_NAME}" \
-    #         --yes
-
-    #       echo "[INFO] AZURE_CONTAINER_APP_NAME deleted"
-
-    #       sleep 30
-
-    #       # sometimes delete operation needs more time to works,
-    #       # so we retry the operation for 60 seconds
-
-    #       START_TIME=$(date +%s)
-    #       while [ $(( $(date +%s) - 60 )) -lt $START_TIME ]; do
-
-    #         GITHUB_RUNNER_ID=$(curl \
-    #           -H "Accept: application/vnd.github+json" \
-    #           -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
-    #           https://api.github.com/repos/${{ github.repository }}/actions/runners | jq '.runners | map(select(.name | startswith("'${AZURE_CONTAINER_APP_NAME}'"))) | .[].id' -r)
-
-    #         # [ -z "$GITHUB_RUNNER_ID" ] && echo "no runners found" && break
-    #         if [ -z "$GITHUB_RUNNER_ID" ]
-    #         then
-    #           echo "[INFO] GITHUB_RUNNER_ID is empty"
-    #           break
-    #         fi
-
-    #         echo "[INFO] GITHUB_RUNNER_ID: ${GITHUB_RUNNER_ID} is NOT empty"
-
-    #         curl \
-    #           -X DELETE \
-    #           -H "Accept: application/vnd.github+json" \
-    #           -H "Authorization: Bearer ${{ secrets.BOT_TOKEN }}" \
-    #           https://api.github.com/repos/${{ github.repository }}/actions/runners/${GITHUB_RUNNER_ID}
-
-    #         sleep 66
-
-    #       done
-
-    #       echo "[INFO] GITHUB_RUNNER_ID deleted"
