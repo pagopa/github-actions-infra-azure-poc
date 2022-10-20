@@ -1,1 +1,1 @@
-# github-self-hosted-runner-poc-azure
+# github-self-hosted-runner-azure-poc
