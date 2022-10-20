@@ -65,4 +65,3 @@ jobs:
           resource_group_name: "pasquale-test"
           runner_name: ${{ needs.create_runner.outputs.runner_name }}
           pat_token: ${{ secrets.BOT_TOKEN }}
-
