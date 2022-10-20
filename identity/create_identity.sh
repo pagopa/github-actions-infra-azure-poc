@@ -35,8 +35,8 @@ echo "[INFO] Created service principal ID: TODO"
 
 CREDENTIAL_NAME="github-federated-${GITHUB_REPO_ENVIRONMENT}"
 CREDENTIAL_REPO="repo:${GITHUB_REPO_ORG}/${GITHUB_REPO_NAME}"
-# CREDENTIAL_TYPE="ref:refs/heads/${GITHUB_REPO_BRANCH"
-CREDENTIAL_TYPE="environment:prod"
+CREDENTIAL_TYPE="ref:refs/heads/${GITHUB_REPO_BRANCH}"
+# CREDENTIAL_TYPE="environment:prod"
 
 echo "[INFO] Create Github federated credential"
 az rest \
