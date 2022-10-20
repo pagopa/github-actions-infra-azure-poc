@@ -31,7 +31,6 @@ jobs:
           container_app_environment_name: "capp-env-pasq"
           resource_group_name: "pasquale-test"
           pat_token: ${{ secrets.BOT_TOKEN }}
-          # self_hosted_runner_image_tag: "v1.1.0@sha256:9433f263959165c0e39d5e7ae5666eb0e03e613c3295ab0e8dbec2953ae5cad2"
 
   runner_job:
     name: Runner Job
