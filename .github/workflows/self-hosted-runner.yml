@@ -48,6 +48,7 @@ jobs:
       - name: 'Run CLI commands on self hosted runner'
         run: |
           echo "hello"
+          echo "world"
           pwd
 
   cleanup_runner:
