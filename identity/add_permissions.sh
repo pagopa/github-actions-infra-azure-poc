@@ -37,3 +37,4 @@ az role assignment create \
   --assignee-object-id "${SP_OBJECT_ID}" \
   --assignee-principal-type ServicePrincipal \
   --scope "/subscriptions/${SUBSCRIPTION_ID}"
+
