@@ -47,7 +47,7 @@ variable "tags" {
   }
 }
 
-# Networking
+### Network
 variable "vnet_address_space" {
   type    = list(string)
   default = ["10.0.0.0/16"]
@@ -62,6 +62,13 @@ variable "github_runner" {
     subnet_address_prefixes = ["10.0.0.0/23"]
   }
 }
+
+variable "private_endpoints_subnet_address_prefixes" {
+  type    = list(string)
+  default = ["10.0.4.0/23"]
+}
+
+### Monitor
 
 variable "log_analytics_workspace" {
   type = object({

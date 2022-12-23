@@ -14,6 +14,13 @@ resource "azurerm_virtual_network" "vnet" {
   tags = var.tags
 }
 
+resource "azurerm_subnet" "private_endpoints_snet" {
+  name                 = "private-endpoints-snet"
+  resource_group_name  = azurerm_virtual_network.vnet.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.private_endpoints_subnet_address_prefixes
+}
+
 resource "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = azurerm_resource_group.network_rg.name

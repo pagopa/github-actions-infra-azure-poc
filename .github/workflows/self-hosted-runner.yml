@@ -18,8 +18,8 @@ env:
   AZURE_CLIENT_ID: "df57cbf1-6d41-4c9c-a618-e446521e4aa3"
   AZURE_TENANT_ID: "7788edaf-0346-4068-9d79-c868aed15b3d"
   AZURE_SUBSCRIPTION_ID: "ac17914c-79bf-48fa-831e-1359ef74c1d5"
-  CONTAINER_APP_ENVIRONMENT_NAME: "capp-env-pasq"
-  RESOURCE_GROUP_NAME: "pasquale-test"
+  CONTAINER_APP_ENVIRONMENT_NAME: "gitpoc-d-github-runner-cae"
+  RESOURCE_GROUP_NAME: "gitpoc-d-github-runner-rg"
 
 jobs:
   create_runner:
@@ -28,7 +28,7 @@ jobs:
     outputs:
       runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
     steps:
-      - name: Create GitHub Runner 
+      - name: Create GitHub Runner
         id: create_github_runner
         uses: pagopa/github-self-hosted-runner-azure-create-action@main # TODO change to sha
         with:
@@ -43,7 +43,7 @@ jobs:
     name: Runner Job
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}" ]
     needs: create_runner
-    
+
     steps:
       - name: Checkout
         id: checkout
@@ -52,18 +52,24 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: 'Run CLI commands on self hosted runner'
+      - name: Read terraform version
+        id: read-version
+        shell: bash
         run: |
-          echo "hello"
-          echo "world"
-          pwd
+          echo "TERRAFORM_VERSION=`cat .terraform-version`" >> $GITHUB_ENV
+
+      - name: Setup Terraform
+        # from https://github.com/hashicorp/setup-terraform/commits/main
+        uses: hashicorp/setup-terraform@8feba2b913ea459066180f9cb177f58a881cf146
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
 
   cleanup_runner:
     name: Cleanup Runner
     runs-on: ubuntu-22.04
     needs: [ create_runner, runner_job]
     steps:
-      - name: Cleanup GitHub Runner 
+      - name: Cleanup GitHub Runner
         id: cleanup_github_runner
         uses: pagopa/github-self-hosted-runner-azure-cleanup-action@main # TODO change to sha
         with:
