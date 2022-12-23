@@ -61,6 +61,8 @@ jobs:
           unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
           mkdir -p ${HOME}/bin
           mv terraform ${HOME}/bin/
+          export PATH="${HOME}/bin:$PATH"
+          . ${HOME}/.profile
           terraform -v
 
       # - name: Setup Terraform
