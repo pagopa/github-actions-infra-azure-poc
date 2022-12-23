@@ -56,12 +56,11 @@ jobs:
         id: read-version
         shell: bash
         run: |
-          echo "TERRAFORM_VERSION=`cat .terraform-version`" >> $GITHUB_ENV
-          echo ${{ env.TERRAFORM_VERSION }}
-          wget https://releases.hashicorp.com/terraform/${{ env.TERRAFORM_VERSION }}/terraform_${{ env.TERRAFORM_VERSION }}_linux_amd64.zip
-          unzip terraform_${{ env.TERRAFORM_VERSION }}_linux_amd64.zip
+          TERRAFORM_VERSION=`cat .terraform-version`
+          wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+          unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
           mkdir -p ${HOME}/bin
-          mv terraform ${HOME}/bin
+          mv terraform ${HOME}/bin/
           terraform -v
 
       # - name: Setup Terraform
