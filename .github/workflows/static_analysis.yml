@@ -15,14 +15,15 @@ jobs:
         env:
           FOLDERS: >
             .identity
+            src/core
         run: |
           pids=()
 
           TAG=$(cat .terraform-version)
           for f in $FOLDERS; do
             pushd "$(pwd)/${f}"
-              rm -rf 00_main.tf
-              mv 00_main.tf.ci 00_main.tf
+              rm -rf 99_main.tf
+              mv 99_main.tf.ci 99_main.tf
               docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
               pids+=($!)
             popd
