@@ -61,17 +61,9 @@ jobs:
           unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
           mkdir -p ${HOME}/bin
           mv terraform ${HOME}/bin/
-          # git -v
-          # export PATH="${HOME}/bin:$PATH"
-          # ls -la ${HOME}
-          # . ${HOME}/.profile
-          # terraform -v
-
-      # - name: Setup Terraform
-      #   # from https://github.com/hashicorp/setup-terraform/commits/main
-      #   uses: hashicorp/setup-terraform@8feba2b913ea459066180f9cb177f58a881cf146
-      #   with:
-      #     terraform_version: ${{ env.TERRAFORM_VERSION }}
+          export PATH="${HOME}/bin:$PATH"
+          terraform -v
+          ls -la
 
       - name: Login
         id: login
