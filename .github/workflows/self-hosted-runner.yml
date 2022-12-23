@@ -14,6 +14,13 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  AZURE_CLIENT_ID: "df57cbf1-6d41-4c9c-a618-e446521e4aa3"
+  AZURE_TENANT_ID: "7788edaf-0346-4068-9d79-c868aed15b3d"
+  AZURE_SUBSCRIPTION_ID: "ac17914c-79bf-48fa-831e-1359ef74c1d5"
+  CONTAINER_APP_ENVIRONMENT_NAME: "capp-env-pasq"
+  RESOURCE_GROUP_NAME: "pasquale-test"
+
 jobs:
   create_runner:
     name: Create Runner
@@ -23,13 +30,13 @@ jobs:
     steps:
       - name: Create GitHub Runner 
         id: create_github_runner
-        uses: pagopa/github-self-hosted-runner-azure-create-action@main
+        uses: pagopa/github-self-hosted-runner-azure-create-action@main # TODO change to sha
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          container_app_environment_name: "capp-env-pasq"
-          resource_group_name: "pasquale-test"
+          client_id: ${{ env.AZURE_CLIENT_ID }}
+          tenant_id: ${{ env.AZURE_TENANT_ID }}
+          subscription_id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          container_app_environment_name: ${{ env.CONTAINER_APP_ENVIRONMENT_NAME }}
+          resource_group_name: ${{ env.RESOURCE_GROUP_NAME }}
           pat_token: ${{ secrets.BOT_TOKEN }}
 
   runner_job:
@@ -40,7 +47,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 # TODO change to sha
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -58,11 +65,11 @@ jobs:
     steps:
       - name: Cleanup GitHub Runner 
         id: cleanup_github_runner
-        uses: pagopa/github-self-hosted-runner-azure-cleanup-action@main
+        uses: pagopa/github-self-hosted-runner-azure-cleanup-action@main # TODO change to sha
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resource_group_name: "pasquale-test"
+          client_id: ${{ env.AZURE_CLIENT_ID }}
+          tenant_id: ${{ env.AZURE_TENANT_ID }}
+          subscription_id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          resource_group_name: ${{ env.RESOURCE_GROUP_NAME }}
           runner_name: ${{ needs.create_runner.outputs.runner_name }}
           pat_token: ${{ secrets.BOT_TOKEN }}
