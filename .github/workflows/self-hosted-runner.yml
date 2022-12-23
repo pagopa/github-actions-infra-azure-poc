@@ -84,18 +84,17 @@ jobs:
       - name: Apply
         shell: bash
         run: |
+          export PATH="${HOME}/bin:$PATH"
           export ARM_CLIENT_ID=${{ env.AZURE_CLIENT_ID }}
           export ARM_TENANT_ID=${{ env.AZURE_TENANT_ID }}
           export ARM_SUBSCRIPTION_ID=${{ env.AZURE_SUBSCRIPTION_ID }}
           export ARM_USE_OIDC=true
 
           cd src/core
-          ls -la
-          terraform -v
 
-          # bash terraform.sh plan dev \
-          #   -lock-timeout=300s \
-          #   -lock=false
+          bash terraform.sh plan dev \
+            -lock-timeout=300s \
+            -lock=false
 
   cleanup_runner:
     name: Cleanup Runner
