@@ -46,3 +46,33 @@ variable "tags" {
     CreatedBy = "Terraform"
   }
 }
+
+# Networking
+variable "vnet_address_space" {
+  type    = list(string)
+  default = ["10.0.0.0/16"]
+}
+
+variable "github_runner" {
+  type = object({
+    subnet_address_prefixes = list(string)
+  })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.0.0.0/23"]
+  }
+}
+
+variable "log_analytics_workspace" {
+  type = object({
+    sku               = string
+    retention_in_days = number
+    daily_quota_gb    = number
+  })
+  description = "GitHub runner variables"
+  default = {
+    sku               = "PerGB2018"
+    retention_in_days = 30
+    daily_quota_gb    = 1
+  }
+}
