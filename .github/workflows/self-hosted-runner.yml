@@ -103,3 +103,4 @@ jobs:
           resource_group_name: ${{ env.RESOURCE_GROUP_NAME }}
           runner_name: ${{ needs.create_runner.outputs.runner_name }}
           pat_token: ${{ secrets.BOT_TOKEN }}
+
