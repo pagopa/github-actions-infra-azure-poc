@@ -83,6 +83,7 @@ jobs:
           export ARM_USE_OIDC=true
 
           cd src/core
+          ls -la
 
           bash terraform.sh plan dev \
             -lock-timeout=300s \
