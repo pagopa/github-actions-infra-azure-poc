@@ -90,6 +90,7 @@ jobs:
 
   cleanup_runner:
     name: Cleanup Runner
+    if: always()
     runs-on: ubuntu-22.04
     needs: [ create_runner, runner_job]
     steps:
