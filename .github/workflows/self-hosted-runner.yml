@@ -84,6 +84,7 @@ jobs:
 
           cd src/core
           ls -la
+          terraform -v
 
           bash terraform.sh plan dev \
             -lock-timeout=300s \
