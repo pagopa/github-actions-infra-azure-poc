@@ -86,9 +86,9 @@ jobs:
           ls -la
           terraform -v
 
-          bash terraform.sh plan dev \
-            -lock-timeout=300s \
-            -lock=false
+          # bash terraform.sh plan dev \
+          #   -lock-timeout=300s \
+          #   -lock=false
 
   cleanup_runner:
     name: Cleanup Runner
