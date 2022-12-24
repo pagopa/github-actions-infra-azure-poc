@@ -63,7 +63,7 @@ jobs:
           mv terraform ${HOME}/bin/
           export PATH="${HOME}/bin:$PATH"
           terraform -v
-          ls -la
+          ls -la ${HOME}
 
       - name: Login
         id: login
