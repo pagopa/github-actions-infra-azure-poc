@@ -17,7 +17,7 @@ module "storage_data" {
   location                        = azurerm_resource_group.data_rg.location
   advanced_threat_protection      = false
   allow_nested_items_to_be_public = false
-  enable_low_availability_alert   = true
+  enable_low_availability_alert   = false
 
   network_rules = {
     default_action = "Deny"
