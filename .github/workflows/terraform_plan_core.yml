@@ -1,14 +1,14 @@
-name: Self Hosted Runner
+name: Terraform plan core
 
 on:
-  # Trigger the workflow on push on the main branch
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'CODEOWNERS'
-      - '**.md'
-      # - '.**'
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+    paths:
+      - 'src/core/**'
 
 permissions:
   id-token: write
@@ -20,6 +20,8 @@ env:
   AZURE_SUBSCRIPTION_ID: "ac17914c-79bf-48fa-831e-1359ef74c1d5"
   CONTAINER_APP_ENVIRONMENT_NAME: "gitpoc-d-github-runner-cae"
   RESOURCE_GROUP_NAME: "gitpoc-d-github-runner-rg"
+  DIR: "src/core"
+  ENVIRONMENT: "dev"
 
 jobs:
   create_runner:
@@ -47,13 +49,14 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3 # TODO change to sha
+        # from https://github.com/actions/checkout/commits/main
+        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
         with:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Read terraform version
-        id: read-version
+      - name: Setup terraform
+        id: setup-version
         shell: bash
         run: |
           TERRAFORM_VERSION=`cat .terraform-version`
@@ -63,7 +66,6 @@ jobs:
           mv terraform ${HOME}/bin/
           export PATH="${HOME}/bin:$PATH"
           terraform -v
-          ls -la ${HOME}
 
       - name: Login
         id: login
@@ -74,7 +76,7 @@ jobs:
           tenant-id: ${{ env.AZURE_TENANT_ID }}
           subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Apply
+      - name: Terraform plan
         shell: bash
         run: |
           export PATH="${HOME}/bin:$PATH"
@@ -83,11 +85,9 @@ jobs:
           export ARM_SUBSCRIPTION_ID=${{ env.AZURE_SUBSCRIPTION_ID }}
           export ARM_USE_OIDC=true
 
-          cd src/core
+          cd ${{ env.DIR }}
 
-          bash terraform.sh plan dev \
-            -lock-timeout=300s \
-            -lock=false
+          bash terraform.sh plan ${{ env.ENVIRONMENT }} -lock-timeout=300s -lock=false
 
   cleanup_runner:
     name: Cleanup Runner
