@@ -85,7 +85,7 @@ jobs:
 
           cd ${{ env.DIR }}
 
-          bash terraform.sh apply ${{ env.ENVIRONMENT }} -lock-timeout=3000s
+          bash terraform.sh apply ${{ env.ENVIRONMENT }} -lock-timeout=3000s -auto-approve
 
   cleanup_runner:
     name: Cleanup Runner
