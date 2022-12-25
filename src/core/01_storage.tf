@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "data_rg" {
 module "storage_data" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=fix-storage-account"
 
-  name                            = replace("${local.project}st", "-", "")
+  name                            = replace("${local.project}datast", "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
   account_replication_type        = "LRS"
@@ -20,7 +20,7 @@ module "storage_data" {
   enable_low_availability_alert   = false
 
   network_rules = {
-    default_action = "Deny"
+    default_action = "Allow"
     ip_rules       = []
     bypass = [
       "Logging",
