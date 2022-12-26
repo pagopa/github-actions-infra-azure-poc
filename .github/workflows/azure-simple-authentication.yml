@@ -1,12 +1,9 @@
 name: Azure simple authentication
 
 on:
-  # Trigger the workflow on push on the main branch
   push:
     branches:
       - main
-    paths:
-      - 'src/core/**'
 
 permissions:
   id-token: write
