@@ -18,8 +18,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_github_runner"></a> [github\_runner](#module\_github\_runner) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment | v3.4.3 |
-| <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | fix-storage-account |
+| <a name="module_github_runner"></a> [github\_runner](#module\_github\_runner) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment | v3.4.4 |
+| <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v3.4.4 |
 
 ## Resources
 

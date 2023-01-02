@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "data_rg" {
 }
 
 module "storage_data" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=fix-storage-account"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v3.4.4"
 
   name                            = replace("${local.project}datast", "-", "")
   account_kind                    = "StorageV2"
