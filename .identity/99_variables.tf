@@ -1,9 +1,11 @@
-variable "github" {
-  type = object({
-    org        = string
-    repository = string
-  })
-  description = "GitHub Organization and repository name"
+variable "prefix" {
+  type = string
+  validation {
+    condition = (
+      length(var.prefix) <= 6
+    )
+    error_message = "Max length is 6 chars."
+  }
 }
 
 variable "env" {
@@ -11,7 +13,64 @@ variable "env" {
   description = "Environment"
 }
 
-variable "pullrequest_terraform_subscription_role" {
+variable "env_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.env_short) <= 1
+    )
+    error_message = "Max length is 1 chars."
+  }
+}
+
+variable "github" {
+  type = object({
+    org        = string
+    repository = string
+  })
+  description = "GitHub Organization and repository name"
+  default = {
+    org        = "pagopa"
+    repository = "github-actions-infra-azure-poc"
+  }
+}
+
+variable "github_token" {
   type        = string
-  description = "Pull request identity role on subscription"
+  sensitive   = true
+  description = "GitHub Organization and repository name"
+}
+
+variable "environment_ci_roles" {
+  type = object({
+    subscription     = string
+    tfstate_inf      = string
+    github_runner_rg = string
+  })
+  description = "GitHub Continous Integration roles"
+}
+
+variable "github_repository_environment_ci" {
+  type = object({
+    protected_branches     = bool
+    custom_branch_policies = bool
+  })
+  description = "GitHub Continous Integration roles"
+}
+
+variable "environment_cd_roles" {
+  type = object({
+    subscription     = string
+    tfstate_inf      = string
+    github_runner_rg = string
+  })
+  description = "GitHub Continous Delivery roles"
+}
+
+variable "github_repository_environment_cd" {
+  type = object({
+    protected_branches     = bool
+    custom_branch_policies = bool
+  })
+  description = "GitHub Continous Integration roles"
 }

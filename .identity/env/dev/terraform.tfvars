@@ -2,17 +2,32 @@ prefix    = "gitpoc"
 env_short = "d"
 env       = "dev"
 
-github = {
-  org        = "pagopa"
-  repository = "github-self-hosted-runner-azure-poc"
+environment_ci_roles = {
+  subscription     = "Contributor"
+  tfstate_inf      = "Contributor"
+  github_runner_rg = "Contributor"
 }
 
-pullrequest_terraform_subscription_role = "Contributor"
-
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "DEV"
-  Owner       = "cloud"
-  Source      = "https://github.com/pagopa/github-self-hosted-runner-azure-poc"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+github_repository_environment_ci = {
+  protected_branches     = false
+  custom_branch_policies = true
 }
+
+environment_cd_roles = {
+  subscription     = "Contributor"
+  tfstate_inf      = "Contributor"
+  github_runner_rg = "Contributor"
+}
+
+github_repository_environment_cd = {
+  protected_branches     = false
+  custom_branch_policies = true
+}
+
+# tags = {
+#   CreatedBy   = "Terraform"
+#   Environment = "DEV"
+#   Owner       = "cloud"
+#   Source      = "https://github.com/pagopa/github-self-hosted-runner-azure-poc"
+#   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+# }
