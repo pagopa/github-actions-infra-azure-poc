@@ -43,7 +43,7 @@ jobs:
 
   runner_job:
     name: Runner Job
-    runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}" ]
+    runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
     needs: create_runner
 
     steps:
@@ -93,7 +93,7 @@ jobs:
     name: Cleanup Runner
     if: always()
     runs-on: ubuntu-22.04
-    needs: [ create_runner, runner_job]
+    needs: [create_runner, runner_job]
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner
