@@ -27,3 +27,24 @@ resource "github_actions_environment_secret" "azure_ci_client_id" {
   secret_name     = "AZURE_CLIENT_ID"
   plaintext_value = azuread_service_principal.environment_ci.application_id
 }
+
+resource "github_actions_environment_secret" "azure_ci_container_app_environment_name" {
+  repository      = var.github.repository
+  environment     = "${var.env}-ci"
+  secret_name     = "AZURE_CONTAINER_APP_ENVIRONMENT_NAME"
+  plaintext_value = "${local.project}-github-runner-cae"
+}
+
+resource "github_actions_environment_secret" "azure_ci_resource_group_name" {
+  repository      = var.github.repository
+  environment     = "${var.env}-ci"
+  secret_name     = "AZURE_RESOURCE_GROUP_NAME"
+  plaintext_value = "${local.project}-github-runner-rg"
+}
+
+resource "github_actions_environment_secret" "environment_ci" {
+  repository      = var.github.repository
+  environment     = "${var.env}-ci"
+  secret_name     = "ENVIRONMENT"
+  plaintext_value = var.env
+}
