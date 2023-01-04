@@ -23,11 +23,3 @@ github_repository_environment_cd = {
   protected_branches     = false
   custom_branch_policies = true
 }
-
-# tags = {
-#   CreatedBy   = "Terraform"
-#   Environment = "DEV"
-#   Owner       = "cloud"
-#   Source      = "https://github.com/pagopa/github-self-hosted-runner-azure-poc"
-#   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-# }
