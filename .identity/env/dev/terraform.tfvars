@@ -10,6 +10,7 @@ environment_ci_roles = {
     "Storage File Data SMB Share Reader",
     "Storage Queue Data Reader",
     "Storage Table Data Reader",
+    "PagoPA Export Deployments Template",
   ]
 }
 
