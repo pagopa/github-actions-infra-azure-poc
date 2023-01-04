@@ -24,8 +24,7 @@ jobs:
     strategy:
       matrix:
         environment: [dev-ci, prod-ci]
-    environment:
-      name: ${{ matrix.environment }}
+    environment: ${{ matrix.environment }}
     outputs:
       runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
     steps:
@@ -48,8 +47,7 @@ jobs:
     strategy:
       matrix:
         environment: [dev-ci, prod-ci]
-    environment:
-      name: ${{ matrix.environment }}
+    environment: ${{ matrix.environment }}
     steps:
       - name: Checkout
         id: checkout
@@ -101,8 +99,7 @@ jobs:
     strategy:
       matrix:
         environment: [dev-ci, prod-ci]
-    environment:
-      name: ${{ matrix.environment }}
+    environment: ${{ matrix.environment }}
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner
