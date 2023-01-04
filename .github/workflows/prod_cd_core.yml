@@ -85,7 +85,7 @@ jobs:
 
           cd ${{ env.DIR }}
 
-          bash terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=300s -out=tfplan -input=false
+          bash terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan -input=false
 
   terraform_apply_job:
     name: Terraform Apply Job
@@ -115,7 +115,7 @@ jobs:
 
           cd ${{ env.DIR }}
 
-          bash terraform.sh apply ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -auto-approve -input=false tfplan
+          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan
 
   cleanup_runner:
     name: Cleanup Runner
