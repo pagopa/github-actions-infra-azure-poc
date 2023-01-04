@@ -16,16 +16,17 @@ resource "azuread_application_federated_identity_credential" "environment_ci" {
 }
 
 resource "azurerm_role_assignment" "environment_ci_subscription" {
+  for_each             = toset(var.environment_ci_roles.subscription)
   scope                = data.azurerm_subscription.current.id
-  role_definition_name = var.environment_ci_roles.subscription
+  role_definition_name = each.key
   principal_id         = azuread_service_principal.environment_ci.object_id
 }
 
-resource "azurerm_role_assignment" "environment_ci_tfstate_inf" {
-  scope                = data.azurerm_storage_account.tfstate_inf.id
-  role_definition_name = var.environment_cd_roles.tfstate_inf
-  principal_id         = azuread_service_principal.environment_ci.object_id
-}
+# resource "azurerm_role_assignment" "environment_ci_tfstate_inf" {
+#   scope                = data.azurerm_storage_account.tfstate_inf.id
+#   role_definition_name = var.environment_cd_roles.tfstate_inf
+#   principal_id         = azuread_service_principal.environment_ci.object_id
+# }
 
 resource "azurerm_role_assignment" "environment_ci_github_runner_rg" {
   scope                = data.azurerm_resource_group.github_runner_rg.id
