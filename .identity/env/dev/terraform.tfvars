@@ -10,8 +10,8 @@ environment_ci_roles = {
     "Storage File Data SMB Share Reader",
     "Storage Queue Data Reader",
     "Storage Table Data Reader",
+    "PagoPA Export Deployments Template",
   ]
-  github_runner_rg = "Contributor"
 }
 
 github_repository_environment_ci = {
@@ -28,7 +28,6 @@ environment_cd_roles = {
     "Storage Queue Data Contributor",
     "Storage Table Data Contributor",
   ]
-  github_runner_rg = "Contributor"
 }
 
 github_repository_environment_cd = {

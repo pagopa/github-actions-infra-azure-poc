@@ -44,8 +44,6 @@ variable "github_token" {
 variable "environment_ci_roles" {
   type = object({
     subscription = list(string)
-    # tfstate_inf      = string
-    github_runner_rg = string
   })
   description = "GitHub Continous Integration roles"
 }
@@ -61,8 +59,6 @@ variable "github_repository_environment_ci" {
 variable "environment_cd_roles" {
   type = object({
     subscription = list(string)
-    # tfstate_inf      = string
-    github_runner_rg = string
   })
   description = "GitHub Continous Delivery roles"
 }

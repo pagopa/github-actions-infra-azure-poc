@@ -24,8 +24,8 @@ module "storage_data" {
     ip_rules       = []
     bypass = [
       "Logging",
-      # "Metrics",
-      # "AzureServices",
+      "Metrics",
+      "AzureServices",
     ]
     virtual_network_subnet_ids = []
   }
