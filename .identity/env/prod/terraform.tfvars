@@ -3,7 +3,7 @@ env_short = "p"
 env       = "prod"
 
 environment_ci_roles = {
-  subscription     = [
+  subscription = [
     "Reader",
     "Reader and Data Access",
     "Storage Blob Data Reader",
@@ -20,7 +20,7 @@ github_repository_environment_ci = {
 }
 
 environment_cd_roles = {
-  subscription     = [
+  subscription = [
     "Contributor",
     "Storage Account Contributor",
     "Storage Blob Data Contributor",
