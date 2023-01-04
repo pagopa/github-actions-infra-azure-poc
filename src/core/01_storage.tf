@@ -25,6 +25,7 @@ module "storage_data" {
     bypass = [
       "Logging",
       "Metrics",
+      "AzureServices",
     ]
     virtual_network_subnet_ids = []
   }
