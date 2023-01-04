@@ -27,7 +27,7 @@ jobs:
       - name: Create GitHub Runner
         id: create_github_runner
         # from https://github.com/pagopa/github-self-hosted-runner-azure-create-action/commits/main
-        uses: pagopa/github-self-hosted-runner-azure-create-action@be71a6f2e5f6440009ad0bc9615720f47a7cc8c4
+        uses: pagopa/github-self-hosted-runner-azure-create-action@28c46496215a4aeb2da320432fcfa46ed8c5def0
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
