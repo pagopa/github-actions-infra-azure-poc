@@ -4,7 +4,11 @@ resource "github_repository_environment" "github_repository_environment_cd" {
   dynamic "reviewers" {
     for_each = (var.github_repository_environment_cd.reviewers_teams == null ? [] : [1])
     content {
-      teams = matchkeys(data.github_organization_teams.all.teams.*.id, data.github_organization_teams.all.teams.*.name, var.github_repository_environment_cd.reviewers_teams)
+      teams = matchkeys(
+        data.github_organization_teams.all.teams.*.id,
+        data.github_organization_teams.all.teams.*.name,
+        var.github_repository_environment_cd.reviewers_teams
+      )
     }
   }
   deployment_branch_policy {
