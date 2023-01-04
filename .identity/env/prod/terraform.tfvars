@@ -6,7 +6,7 @@ environment_ci_roles = {
   subscription     = [
     "Reader",
     "Reader and Data Access",
-    # "Storage Blob Data Reader",
+    "Storage Blob Data Reader",
     # "Storage File Data SMB Share Reader",
     # "Storage Queue Data Reader",
     # "Storage Table Data Reader",

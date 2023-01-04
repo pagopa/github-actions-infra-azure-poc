@@ -6,6 +6,7 @@ environment_ci_roles = {
   subscription     = [
     "Contributor",
     "Storage Account Contributor",
+    "Storage Blob Data Reader",
   ]
   # tfstate_inf      = "Contributor"
   github_runner_rg = "Contributor"
