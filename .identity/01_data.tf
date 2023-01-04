@@ -11,3 +11,8 @@ data "azurerm_storage_account" "tfstate_inf" {
 data "azurerm_resource_group" "github_runner_rg" {
   name = "${local.project}-github-runner-rg"
 }
+
+data "github_organization_teams" "all" {
+  root_teams_only = true
+  summary_only    = true
+}
