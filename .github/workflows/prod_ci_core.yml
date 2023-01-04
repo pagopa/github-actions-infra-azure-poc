@@ -1,4 +1,4 @@
-name: Continuous Integration on prod
+name: Continuous Integration on prod core
 
 on:
   pull_request:
@@ -41,8 +41,8 @@ jobs:
   runner_job:
     name: Runner Job
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
-    needs: create_runner
     environment: prod-ci
+    needs: create_runner
     steps:
       - name: Checkout
         id: checkout
@@ -92,8 +92,8 @@ jobs:
     name: Cleanup Runner
     if: always()
     runs-on: ubuntu-22.04
-    needs: [create_runner, runner_job]
     environment: prod-ci
+    needs: [create_runner, runner_job]
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner

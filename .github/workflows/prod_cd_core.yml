@@ -1,12 +1,10 @@
-name: Continuous Integration on dev core
+name: Continuous Delivery on prod core
 
 on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
+  # Trigger the workflow on push on the main branch
+  push:
+    branches:
+      - main
     paths:
       - 'src/core/**'
 
@@ -16,13 +14,13 @@ permissions:
 
 env:
   DIR: "src/core"
-  AZURE_ENVIRONMENT: dev
+  AZURE_ENVIRONMENT: prod
 
 jobs:
   create_runner:
     name: Create Runner
     runs-on: ubuntu-22.04
-    environment: dev-ci
+    environment: prod-cd
     outputs:
       runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
     steps:
@@ -41,7 +39,7 @@ jobs:
   runner_job:
     name: Runner Job
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
-    environment: dev-ci
+    environment: prod-cd
     needs: create_runner
     steps:
       - name: Checkout
@@ -73,7 +71,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Terraform plan
+      - name: Terraform apply
         shell: bash
         run: |
           export PATH="${HOME}/bin:$PATH"
@@ -86,13 +84,13 @@ jobs:
 
           cd ${{ env.DIR }}
 
-          bash terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=300s -lock=false
+          bash terraform.sh apply ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -auto-approve
 
   cleanup_runner:
     name: Cleanup Runner
     if: always()
     runs-on: ubuntu-22.04
-    environment: dev-ci
+    environment: prod-cd
     needs: [create_runner, runner_job]
     steps:
       - name: Cleanup GitHub Runner
