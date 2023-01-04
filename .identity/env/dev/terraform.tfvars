@@ -3,8 +3,14 @@ env_short = "d"
 env       = "dev"
 
 environment_ci_roles = {
-  subscription     = "Contributor"
-  tfstate_inf      = "Contributor"
+  subscription = [
+    "Reader",
+    "Reader and Data Access",
+    "Storage Blob Data Reader",
+    "Storage File Data SMB Share Reader",
+    "Storage Queue Data Reader",
+    "Storage Table Data Reader",
+  ]
   github_runner_rg = "Contributor"
 }
 
@@ -14,8 +20,14 @@ github_repository_environment_ci = {
 }
 
 environment_cd_roles = {
-  subscription     = "Contributor"
-  tfstate_inf      = "Contributor"
+  subscription = [
+    "Contributor",
+    "Storage Account Contributor",
+    "Storage Blob Data Contributor",
+    "Storage File Data SMB Share Contributor",
+    "Storage Queue Data Contributor",
+    "Storage Table Data Contributor",
+  ]
   github_runner_rg = "Contributor"
 }
 
