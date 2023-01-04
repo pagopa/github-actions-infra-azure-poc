@@ -7,37 +7,42 @@ resource "github_repository_environment" "github_repository_environment_ci" {
   }
 }
 
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
 resource "github_actions_environment_secret" "azure_ci_tenant_id" {
   repository      = var.github.repository
   environment     = "${var.env}-ci"
   secret_name     = "AZURE_TENANT_ID"
-  encrypted_value = base64encode(data.azurerm_client_config.current.tenant_id)
+  plaintext_value = data.azurerm_client_config.current.tenant_id
 }
 
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
 resource "github_actions_environment_secret" "azure_ci_subscription_id" {
   repository      = var.github.repository
   environment     = "${var.env}-ci"
   secret_name     = "AZURE_SUBSCRIPTION_ID"
-  encrypted_value = base64encode(data.azurerm_subscription.current.subscription_id)
+  plaintext_value = data.azurerm_subscription.current.subscription_id
 }
 
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
 resource "github_actions_environment_secret" "azure_ci_client_id" {
   repository      = var.github.repository
   environment     = "${var.env}-ci"
   secret_name     = "AZURE_CLIENT_ID"
-  encrypted_value = base64encode(azuread_service_principal.environment_ci.application_id)
+  plaintext_value = azuread_service_principal.environment_ci.application_id
 }
 
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
 resource "github_actions_environment_secret" "azure_ci_container_app_environment_name" {
   repository      = var.github.repository
   environment     = "${var.env}-ci"
   secret_name     = "AZURE_CONTAINER_APP_ENVIRONMENT_NAME"
-  encrypted_value = base64encode("${local.project}-github-runner-cae")
+  plaintext_value = "${local.project}-github-runner-cae"
 }
 
+#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
 resource "github_actions_environment_secret" "azure_ci_resource_group_name" {
   repository      = var.github.repository
   environment     = "${var.env}-ci"
   secret_name     = "AZURE_RESOURCE_GROUP_NAME"
-  encrypted_value = base64encode("${local.project}-github-runner-rg")
+  plaintext_value = "${local.project}-github-runner-rg"
 }
