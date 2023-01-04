@@ -1,6 +1,8 @@
 resource "github_repository_environment" "github_repository_environment_cd" {
   environment = "${var.env}-cd"
   repository  = var.github.repository
+  # filter teams reviewers from github_organization_teams
+  # if reviewers_teams is null no reviewers will be configured for environment
   dynamic "reviewers" {
     for_each = (var.github_repository_environment_cd.reviewers_teams == null ? [] : [1])
     content {
