@@ -5,10 +5,11 @@ env       = "prod"
 environment_ci_roles = {
   subscription     = [
     "Reader",
-    "Storage Blob Data Reader",
-    "Storage File Data SMB Share Reader",
-    "Storage Queue Data Reader",
-    "Storage Table Data Reader",
+    "Reader and Data Access",
+    # "Storage Blob Data Reader",
+    # "Storage File Data SMB Share Reader",
+    # "Storage Queue Data Reader",
+    # "Storage Table Data Reader",
   ]
   # tfstate_inf      = "Reader"
   github_runner_rg = "Contributor"

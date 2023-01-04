@@ -1,4 +1,4 @@
-name: Terraform plan core
+name: Continuous Integration on prod
 
 on:
   pull_request:
