@@ -22,7 +22,7 @@ jobs:
   create_runner:
     name: Create Runner
     runs-on: ubuntu-22.04
-    environment: dev-ci
+    environment: dev-runner
     outputs:
       runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
     steps:
@@ -92,7 +92,7 @@ jobs:
     name: Cleanup Runner
     if: always()
     runs-on: ubuntu-22.04
-    environment: dev-ci
+    environment: dev-runner
     needs: [create_runner, runner_job]
     steps:
       - name: Cleanup GitHub Runner

@@ -22,12 +22,6 @@ resource "azurerm_role_assignment" "environment_ci_subscription" {
   principal_id         = azuread_service_principal.environment_ci.object_id
 }
 
-resource "azurerm_role_assignment" "environment_ci_github_runner_rg" {
-  scope                = data.azurerm_resource_group.github_runner_rg.id
-  role_definition_name = var.environment_ci_roles.github_runner_rg
-  principal_id         = azuread_service_principal.environment_ci.object_id
-}
-
 output "azure_environment_ci" {
   value = {
     app_name       = "${local.app_name}-ci"
