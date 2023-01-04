@@ -16,7 +16,6 @@ permissions:
 
 env:
   DIR: "src/core"
-  ENVIRONMENT: "dev"
 
 jobs:
   create_runner:
