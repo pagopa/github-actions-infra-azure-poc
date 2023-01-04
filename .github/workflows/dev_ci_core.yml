@@ -16,14 +16,13 @@ permissions:
 
 env:
   DIR: "src/core"
-  MY_ENVIRONMENT: dev-ci
   AZURE_ENVIRONMENT: dev
 
 jobs:
   create_runner:
     name: Create Runner
     runs-on: ubuntu-22.04
-    environment: ${{ env.MY_ENVIRONMENT }}
+    environment: dev-ci
     outputs:
       runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
     steps:
@@ -43,7 +42,7 @@ jobs:
     name: Runner Job
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
     needs: create_runner
-    environment: ${{ env.MY_ENVIRONMENT }}
+    environment: dev-ci
     steps:
       - name: Checkout
         id: checkout
@@ -92,7 +91,7 @@ jobs:
     if: always()
     runs-on: ubuntu-22.04
     needs: [create_runner, runner_job]
-    environment: ${{ env.MY_ENVIRONMENT }}
+    environment: dev-ci
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner
