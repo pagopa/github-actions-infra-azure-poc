@@ -39,6 +39,12 @@ resource "azurerm_storage_container" "storage_data_private_container" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "storage_data_private_container_test" {
+  name                  = "private-container-test"
+  storage_account_name  = module.storage_data.name
+  container_access_type = "private"
+}
+
 resource "azurerm_private_endpoint" "storage_data_blob" {
   name                = "${module.storage_data.name}-blob-endpoint"
   location            = azurerm_resource_group.data_rg.location
