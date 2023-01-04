@@ -22,6 +22,12 @@ resource "azurerm_role_assignment" "environment_ci_subscription" {
   principal_id         = azuread_service_principal.environment_ci.object_id
 }
 
+resource "azurerm_role_assignment" "environment_ci_tfstate_inf" {
+  scope                = data.azurerm_storage_account.tfstate_inf.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azuread_service_principal.environment_ci.object_id
+}
+
 output "azure_environment_ci" {
   value = {
     app_name       = "${local.app_name}-ci"

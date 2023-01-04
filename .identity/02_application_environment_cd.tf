@@ -22,6 +22,12 @@ resource "azurerm_role_assignment" "environment_cd_subscription" {
   principal_id         = azuread_service_principal.environment_cd.object_id
 }
 
+resource "azurerm_role_assignment" "environment_cd_tfstate_inf" {
+  scope                = data.azurerm_storage_account.tfstate_inf.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azuread_service_principal.environment_cd.object_id
+}
+
 output "azure_environment_cd" {
   value = {
     app_name       = "${local.app_name}-cd"
