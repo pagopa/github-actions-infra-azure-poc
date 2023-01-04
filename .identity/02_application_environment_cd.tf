@@ -22,12 +22,6 @@ resource "azurerm_role_assignment" "environment_cd_subscription" {
   principal_id         = azuread_service_principal.environment_cd.object_id
 }
 
-# resource "azurerm_role_assignment" "environment_cd_tfstate_inf" {
-#   scope                = data.azurerm_storage_account.tfstate_inf.id
-#   role_definition_name = var.environment_cd_roles.tfstate_inf
-#   principal_id         = azuread_service_principal.environment_cd.object_id
-# }
-
 resource "azurerm_role_assignment" "environment_cd_github_runner_rg" {
   scope                = data.azurerm_resource_group.github_runner_rg.id
   role_definition_name = var.environment_cd_roles.github_runner_rg
