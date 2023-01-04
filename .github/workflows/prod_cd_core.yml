@@ -28,7 +28,7 @@ jobs:
       - name: Create GitHub Runner
         id: create_github_runner
         # from https://github.com/pagopa/github-self-hosted-runner-azure-create-action/commits/main
-        uses: pagopa/github-self-hosted-runner-azure-create-action@28c46496215a4aeb2da320432fcfa46ed8c5def0
+        uses: pagopa/github-self-hosted-runner-azure-create-action@0c926438b36e9dd4a2480ce1010235f4653c6a55
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
@@ -38,7 +38,7 @@ jobs:
           pat_token: ${{ secrets.BOT_TOKEN }}
 
   terraform_plan_job:
-    name: Terraform Plan Job
+    name: Terraform Plan
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
     environment: prod-ci
     needs: create_runner
@@ -88,7 +88,7 @@ jobs:
           bash terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan -input=false
 
   terraform_apply_job:
-    name: Terraform Apply Job
+    name: Terraform Apply
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
     environment: prod-cd
     needs: [create_runner, terraform_plan_job]

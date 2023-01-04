@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - 'src/core/**'
+      - '.github/workflows/dev**'
 
 permissions:
   id-token: write
@@ -27,7 +28,7 @@ jobs:
       - name: Create GitHub Runner
         id: create_github_runner
         # from https://github.com/pagopa/github-self-hosted-runner-azure-create-action/commits/main
-        uses: pagopa/github-self-hosted-runner-azure-create-action@28c46496215a4aeb2da320432fcfa46ed8c5def0
+        uses: pagopa/github-self-hosted-runner-azure-create-action@0c926438b36e9dd4a2480ce1010235f4653c6a55
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
@@ -36,10 +37,10 @@ jobs:
           resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           pat_token: ${{ secrets.BOT_TOKEN }}
 
-  runner_job:
-    name: Runner Job
+  terraform_plan_job:
+    name: Terraform Plan
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
-    environment: dev-cd
+    environment: dev-ci
     needs: create_runner
     steps:
       - name: Checkout
@@ -71,6 +72,36 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Terraform plan
+        shell: bash
+        run: |
+          export PATH="${HOME}/bin:$PATH"
+          export ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}
+          export ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}
+          export ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          export ARM_USE_OIDC=true
+          export ARM_USE_AZUREAD=true
+          export ARM_STORAGE_USE_AZUREAD=true
+
+          cd ${{ env.DIR }}
+
+          bash terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan -input=false
+
+  terraform_apply_job:
+    name: Terraform Apply
+    runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
+    environment: dev-cd
+    needs: [create_runner, terraform_plan_job]
+    steps:
+      - name: Login
+        id: login
+        # from https://github.com/Azure/login/commits/master
+        uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       - name: Terraform apply
         shell: bash
         run: |
@@ -84,14 +115,14 @@ jobs:
 
           cd ${{ env.DIR }}
 
-          bash terraform.sh apply ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -auto-approve
+          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan
 
   cleanup_runner:
     name: Cleanup Runner
     if: always()
     runs-on: ubuntu-22.04
     environment: dev-runner
-    needs: [create_runner, runner_job]
+    needs: [create_runner, terraform_plan_job, terraform_apply_job]
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner
