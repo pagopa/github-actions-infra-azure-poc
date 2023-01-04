@@ -10,11 +10,19 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "3.33.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "5.12.0"
+    }
   }
 }
 
 provider "azurerm" {
   features {}
+}
+
+provider "github" {
+  owner = var.github.org
 }
 
 data "azurerm_subscription" "current" {}
