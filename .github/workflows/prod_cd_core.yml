@@ -114,7 +114,7 @@ jobs:
     if: always()
     runs-on: ubuntu-22.04
     environment: prod-runner
-    needs: [create_runner, runner_job]
+    needs: [create_runner, terraform_plan_job, terraform_apply_job]
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner
