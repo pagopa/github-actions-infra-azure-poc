@@ -57,7 +57,7 @@ jobs:
         # https://github.com/pagopa/terraform-install-action/commits/main
         uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
 
-      - name: Terraform pre apply
+      - name: Terraform plan
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
         uses: pagopa/terraform-plan-azure-action@16aa1ed3966a55182d2eef5617ee03b49a471046
         with:
