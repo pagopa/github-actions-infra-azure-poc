@@ -72,7 +72,7 @@ jobs:
     environment: prod-cd
     needs: [create_runner, terraform_preapply_job]
     steps:
-      - name: Terraform pre apply
+      - name: Terraform apply
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
         uses: pagopa/terraform-apply-azure-action@31282cf06d40dbe7aed5379acb81bab95c149c69
         with:
@@ -80,7 +80,6 @@ jobs:
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}
-          azure_environment: ${{ env.AZURE_ENVIRONMENT }}
 
   cleanup_runner:
     name: Cleanup Runner
