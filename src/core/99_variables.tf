@@ -76,7 +76,7 @@ variable "log_analytics_workspace" {
     retention_in_days = number
     daily_quota_gb    = number
   })
-  description = "GitHub runner variables"
+  description = "Log Analytics Workspace variables"
   default = {
     sku               = "PerGB2018"
     retention_in_days = 30

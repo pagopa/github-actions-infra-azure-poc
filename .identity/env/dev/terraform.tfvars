@@ -11,6 +11,9 @@ environment_ci_roles = {
     "Storage Queue Data Reader",
     "Storage Table Data Reader",
     "PagoPA Export Deployments Template",
+    "Key Vault Secrets User",
+    "DocumentDB Account Contributor",
+    "API Management Service Contributor",
   ]
 }
 
