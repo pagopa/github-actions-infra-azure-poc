@@ -38,7 +38,7 @@ jobs:
           resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           pat_token: ${{ secrets.BOT_TOKEN }}
 
-  runner_job:
+  terraform_plan_job:
     name: Runner Job
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
     environment: dev-ci
@@ -72,7 +72,7 @@ jobs:
     if: always()
     runs-on: ubuntu-22.04
     environment: dev-runner
-    needs: [create_runner, runner_job]
+    needs: [create_runner, terraform_plan_job]
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner
