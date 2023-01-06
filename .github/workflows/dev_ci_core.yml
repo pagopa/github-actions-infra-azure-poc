@@ -66,7 +66,7 @@ jobs:
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}
-          azure_environment: ${{ env.AZURE_ENVIRONMENT }
+          azure_environment: ${{ env.AZURE_ENVIRONMENT }}
 
   cleanup_runner:
     name: Cleanup Runner
