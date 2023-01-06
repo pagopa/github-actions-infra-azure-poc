@@ -20,12 +20,12 @@ module "storage_data" {
   enable_low_availability_alert   = false
 
   network_rules = {
-    default_action = "Allow"
+    default_action = "Deny"
     ip_rules       = []
     bypass = [
       "Logging",
       "Metrics",
-      # "AzureServices",
+      "AzureServices",
     ]
     virtual_network_subnet_ids = []
   }
