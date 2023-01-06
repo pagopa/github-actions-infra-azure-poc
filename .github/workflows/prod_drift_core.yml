@@ -56,8 +56,8 @@ jobs:
         id: cache-terraform-modules
         uses: actions/cache@v3
         with:
-          path: .terraform
-          key: terraform
+          path: ${{ env.DIR }}/.terraform
+          key: terraform-${{ env.DIR }}
 
       - name: Terraform drift detection
         # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main

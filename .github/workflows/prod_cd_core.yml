@@ -61,8 +61,8 @@ jobs:
         id: cache-terraform-modules
         uses: actions/cache@v3
         with:
-          path: .terraform
-          key: terraform
+          path: ${{ env.DIR }}/.terraform
+          key: terraform-${{ env.DIR }}
 
       - name: Terraform pre apply
         # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
