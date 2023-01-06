@@ -57,16 +57,9 @@ jobs:
         # https://github.com/pagopa/terraform-install-action/commits/main
         uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
 
-      - name: Cache terraform modules
-        id: cache-terraform-modules
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.DIR }}/.terraform
-          key: terraform-${{ env.DIR }}
-
       - name: Terraform pre apply
         # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
-        uses: pagopa/terraform-preapply-azure-action@fbb7f3d86c4f13d543f9bb41bd33723efdece787
+        uses: pagopa/terraform-preapply-azure-action@d1a2bd9c895b0aff9ddc42b72a638a541e1358a6
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
@@ -82,7 +75,7 @@ jobs:
     steps:
       - name: Terraform apply
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
-        uses: pagopa/terraform-apply-azure-action@31282cf06d40dbe7aed5379acb81bab95c149c69
+        uses: pagopa/terraform-apply-azure-action@c185709afa46af74bfc45908ebd2ac94c3b96254
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
