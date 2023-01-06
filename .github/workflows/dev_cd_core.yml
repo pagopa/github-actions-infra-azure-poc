@@ -1,6 +1,7 @@
 name: Continuous Delivery on dev core
 
 on:
+  workflow_dispatch:
   # Trigger the workflow on push on the main branch
   push:
     branches:
