@@ -28,7 +28,7 @@ resource "github_actions_environment_secret" "azure_ci_client_id" {
   repository      = var.github.repository
   environment     = "${var.env}-ci"
   secret_name     = "AZURE_CLIENT_ID"
-  plaintext_value = azuread_service_principal.environment_ci.application_id
+  plaintext_value = azurerm_user_assigned_identity.environment_ci.client_id
 }
 
 #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
